@@ -1,12 +1,17 @@
-import React from "react"
+import React, {Suspense} from "react"
 import { Link } from "gatsby"
 
-import {Layout, SEO, ThreeScene} from "../components"
+import { Html } from '@react-three/drei'
+import {Layout, SEO, ThreeScene, ErrorBoundary} from "../components"
 
 const IndexPage = () => (
   <Layout>
     <SEO title="Home" />
-    <ThreeScene />
+    <ErrorBoundary fallback={null}>
+      <Suspense fallback={<Html>loading..</Html>}>
+        <ThreeScene />
+      </Suspense>
+    </ErrorBoundary>
     <Link to="/page-2/">Go to page 2</Link> <br />
   </Layout>
 )

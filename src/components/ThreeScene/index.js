@@ -1,22 +1,22 @@
-import React from "react";
+import React, {Suspense} from "react";
 import { Canvas } from "react-three-fiber";
 import { EditableManager, editable as e } from 'react-three-editable';
-import { PadObj } from "../Pad";
+import { PadObj, ErrorBoundary } from "../index";
 import { PerspectiveCamera } from '@react-three/drei';
 
 import editableState from './editableState.json';
 
 const ThreeScene = () => {
-    const EditableCamera = editable(PerspectiveCamera, 'perspectiveCamera');
+    const EditableCamera = e(PerspectiveCamera, 'perspectiveCamera');
+    const EditablePad = e(PadObj, 'group')
     return (
         <Canvas
-            concurrent
             shadowMap
             camera={{ position: [0, 0, 20] }}
-            style={{ height: "100vh", width: "100vw" }}
+            style={{ height: "100%", width: "100%" }}
         >
             <EditableManager state={editableState} />
-            <EditableCamera uniqueName="Camera" />
+            <EditableCamera makeDefault uniqueName="Camera" />
             <ambientLight intensity={0.5} />
             <e.spotLight
                 position={[10, 10, 10]}
@@ -25,9 +25,11 @@ const ThreeScene = () => {
                 uniqueName="Spotlight"
             />
             <e.pointLight uniqueName="PointLight" />
-            <Suspense fallback={null}>
-                <PadObj/>
-            </Suspense>
+            <ErrorBoundary fallback={null}>
+                <Suspense fallback={null}>
+                    <EditablePad uniqueName="PadObject" />
+                </Suspense>
+            </ErrorBoundary>
         </Canvas>
     )
 }
