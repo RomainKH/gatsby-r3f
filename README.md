@@ -1,2 +1,2 @@
-# gatsby-r3f
-small gatsby r3f &amp; more thing
+# gatsby-r3f boilerplate
+### small gatsby r3f &amp; more thing

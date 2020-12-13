@@ -1,20 +1,36 @@
-import React, {Suspense} from "react";
-import { Canvas } from "react-three-fiber";
+import React, {Suspense, useEffect, useState} from "react";
+import { Canvas, useFrame } from "react-three-fiber";
 import { EditableManager, editable as e } from 'react-three-editable';
-import { PadObj, ErrorBoundary } from "../index";
-import { PerspectiveCamera } from '@react-three/drei';
+import { PadObj, ErrorBoundary } from "../";
+import { EffectComposer, Noise, Bloom } from '@react-three/postprocessing'
+import { PerspectiveCamera, Stars } from '@react-three/drei';
+import lerp from 'lerp';
 
 import editableState from './editableState.json';
+
+const Zoom = () => {
+    // This one makes the camera move in and out
+    useFrame(({ camera }) => {
+        camera.zoom = lerp(camera.zoom, 1.35, 0.05)
+        camera.updateProjectionMatrix()
+    })
+    return null
+}
+  
 
 const ThreeScene = () => {
     const EditableCamera = e(PerspectiveCamera, 'perspectiveCamera');
     const EditablePad = e(PadObj, 'group')
+    const [load, setload] = useState(false)
+    useEffect(() => {
+        setload(true)
+    }, [])
     return (
         <Canvas
             shadowMap
-            camera={{ position: [0, 0, 20] }}
-            style={{ height: "100%", width: "100%" }}
+            style={{ height: '100vh', width: '100vw', position: 'absolute', top: '0', left: '0', zIndex: '-1', background: '#181827' }}
         >
+            <Stars fade/>
             <EditableManager state={editableState} />
             <EditableCamera makeDefault uniqueName="Camera" />
             <ambientLight intensity={0.5} />
@@ -24,13 +40,18 @@ const ThreeScene = () => {
                 penumbra={1}
                 uniqueName="Spotlight"
             />
-            <e.pointLight uniqueName="PointLight" />
             <ErrorBoundary fallback={null}>
                 <Suspense fallback={null}>
                     <EditablePad uniqueName="PadObject" />
                 </Suspense>
             </ErrorBoundary>
+            <EffectComposer>
+                <Noise opacity={0.2} />
+                <Bloom luminanceThreshold={0.1} intensity={0.1} luminanceSmoothing={0.5} height={400} />
+            </EffectComposer>
+            {load && <Zoom />}
         </Canvas>
+        
     )
 }
 
