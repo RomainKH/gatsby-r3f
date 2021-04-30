@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { A11yAnnouncer } from '@react-three/a11y'
 import { EditableManager, editable as e } from 'react-three-editable';
-import { ErrorBoundary } from "../";
 import { EffectComposer, Noise, Bloom } from '@react-three/postprocessing'
 import { PerspectiveCamera, Stars } from '@react-three/drei';
 import lerp from 'lerp';
@@ -26,6 +25,7 @@ const ThreeScene = () => {
     const EditableCamera = e(PerspectiveCamera, 'perspectiveCamera');
     const EditablePad = e(PadObj, 'group')
     const [load, setload] = useState(false)
+    const isSSR = typeof window === "undefined"
     useEffect(() => {
         setload(true)
     }, [])
@@ -45,9 +45,7 @@ const ThreeScene = () => {
                     penumbra={1}
                     uniqueName="Spotlight"
                 />
-                <ErrorBoundary fallback={null}>
-                    <EditablePad uniqueName="PadObject" />
-                </ErrorBoundary>
+                {!isSSR && <EditablePad uniqueName="PadObject" />}
                 <EffectComposer>
                     <Noise opacity={0.2} />
                     <Bloom luminanceThreshold={0.1} intensity={0.1} luminanceSmoothing={0.5} height={400} />
