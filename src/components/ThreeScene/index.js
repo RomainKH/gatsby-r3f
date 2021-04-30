@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import { Canvas, useFrame } from "react-three-fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { A11yAnnouncer } from '@react-three/a11y'
 import { EditableManager, editable as e } from 'react-three-editable';
 import { ErrorBoundary } from "../";

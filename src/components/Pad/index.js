@@ -6,7 +6,7 @@ import React, { useRef, useState } from 'react'
 import * as THREE from "three"
 import { useGLTF, shaderMaterial } from '@react-three/drei'
 import { useSpring, a } from "react-spring/three"
-import { extend, useFrame } from "react-three-fiber"
+import { extend, useFrame } from "@react-three/fiber"
 import { useKeyPress } from "../Utils"
 import glsl from "babel-plugin-glsl/macro"
 import { A11y } from '@react-three/a11y'
