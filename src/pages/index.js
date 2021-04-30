@@ -1,15 +1,15 @@
-import React, {Suspense} from "react"
+import React from "react"
 
-import { Html } from '@react-three/drei'
-import {Layout, SEO, ThreeScene, ErrorBoundary} from "../components"
+import {Layout, SEO, ErrorBoundary} from "../components"
+import loadable from '@loadable/component'
+
+const ThreeScene = loadable(() => import('../components'))
 
 const IndexPage = () => (
   <Layout>
     <SEO title="Home" lang="en" />
     <ErrorBoundary fallback={null}>
-      <Suspense fallback={<Html>Loading..</Html>}>
-        <ThreeScene />
-      </Suspense>
+      <ThreeScene />
     </ErrorBoundary>
   </Layout>
 )

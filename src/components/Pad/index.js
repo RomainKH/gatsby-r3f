@@ -9,6 +9,7 @@ import { useSpring, a } from "react-spring/three"
 import { extend, useFrame } from "react-three-fiber"
 import { useKeyPress } from "../Utils"
 import glsl from "babel-plugin-glsl/macro"
+import { A11y } from '@react-three/a11y'
 
 // IMPORT SOUNDS
 import kick from './sound/kick.wav'
@@ -49,16 +50,18 @@ const Keys = (props) => {
   sound.volume = 0.2
   if(active | keyActive) {sound.play()}
   return (
-    <a.mesh
-      {...props}
-      castShadow
-      onPointerOut={() => setActive(false)}
-      onPointerDown={() => setActive(true)}
-      onPointerUp={() => setActive(false)}
-      scale={key.scale}
-    >
-      {active | keyActive ? <fadeMaterial ref={ref}/> : <meshStandardMaterial color="#FF7960" roughness="1" metalness="0" />}
-    </a.mesh>
+    <A11y>
+      <a.mesh
+        {...props}
+        castShadow
+        onPointerOut={() => setActive(false)}
+        onPointerDown={() => setActive(true)}
+        onPointerUp={() => setActive(false)}
+        scale={key.scale}
+      >
+        {active | keyActive ? <fadeMaterial ref={ref}/> : <meshStandardMaterial color="#FF7960" roughness="1" metalness="0" />}
+      </a.mesh>
+    </A11y>
   )
 }
 

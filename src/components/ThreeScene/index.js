@@ -1,12 +1,16 @@
-import React, {Suspense, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import { Canvas, useFrame } from "react-three-fiber";
+import { A11yAnnouncer } from '@react-three/a11y'
 import { EditableManager, editable as e } from 'react-three-editable';
-import { PadObj, ErrorBoundary } from "../";
+import { ErrorBoundary } from "../";
 import { EffectComposer, Noise, Bloom } from '@react-three/postprocessing'
 import { PerspectiveCamera, Stars } from '@react-three/drei';
 import lerp from 'lerp';
+import loadable from '@loadable/component'
 
 import editableState from './editableState.json';
+
+const PadObj = loadable(() => import('../'))
 
 const Zoom = () => {
     // This one makes the camera move in and out
@@ -26,31 +30,32 @@ const ThreeScene = () => {
         setload(true)
     }, [])
     return (
-        <Canvas
-            shadowMap
-            style={{ height: '100vh', width: '100vw', position: 'absolute', top: '0', left: '0', zIndex: '-1', background: '#181827' }}
-        >
-            <Stars fade/>
-            <EditableManager state={editableState} />
-            <EditableCamera makeDefault uniqueName="Camera" />
-            <ambientLight intensity={0.5} />
-            <e.spotLight
-                position={[10, 10, 10]}
-                angle={0.15}
-                penumbra={1}
-                uniqueName="Spotlight"
-            />
-            <ErrorBoundary fallback={null}>
-                <Suspense fallback={null}>
+        <>
+            <Canvas
+                shadowMap
+                style={{ height: '100vh', width: '100vw', position: 'absolute', top: '0', left: '0', zIndex: '-1', background: '#181827' }}
+            >
+                <Stars fade/>
+                <EditableManager state={editableState} />
+                <EditableCamera makeDefault uniqueName="Camera" />
+                <ambientLight intensity={0.5} />
+                <e.spotLight
+                    position={[10, 10, 10]}
+                    angle={0.15}
+                    penumbra={1}
+                    uniqueName="Spotlight"
+                />
+                <ErrorBoundary fallback={null}>
                     <EditablePad uniqueName="PadObject" />
-                </Suspense>
-            </ErrorBoundary>
-            <EffectComposer>
-                <Noise opacity={0.2} />
-                <Bloom luminanceThreshold={0.1} intensity={0.1} luminanceSmoothing={0.5} height={400} />
-            </EffectComposer>
-            {load && <Zoom />}
-        </Canvas>
+                </ErrorBoundary>
+                <EffectComposer>
+                    <Noise opacity={0.2} />
+                    <Bloom luminanceThreshold={0.1} intensity={0.1} luminanceSmoothing={0.5} height={400} />
+                </EffectComposer>
+                {load && <Zoom />}
+            </Canvas>
+            <A11yAnnouncer />
+        </>
         
     )
 }
