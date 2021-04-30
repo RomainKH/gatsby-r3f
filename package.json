@@ -9,6 +9,7 @@
     "@loadable/component": "^5.14.1",
     "@react-three/a11y": "^2.0.1",
     "@react-three/drei": "^2.2.10",
+    "@react-three/fiber": "^6.0.17",
     "@react-three/postprocessing": "^1.5.0",
     "babel-plugin-glsl": "^1.0.0",
     "gatsby": "^2.26.1",
