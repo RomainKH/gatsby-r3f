@@ -1,12 +1,13 @@
-import React, {Suspense, useEffect, useState} from "react";
-import { Canvas, useFrame } from "react-three-fiber";
-import { EditableManager, editable as e } from 'react-three-editable';
-import { PadObj, ErrorBoundary } from "../";
-import { EffectComposer, Noise, Bloom } from '@react-three/postprocessing'
-import { PerspectiveCamera, Stars } from '@react-three/drei';
-import lerp from 'lerp';
+import React, { useEffect, useState, Suspense} from "react"
+import { Canvas, useFrame } from "@react-three/fiber"
+import { PerspectiveCamera, Stars, Html } from '@react-three/drei'
+import lerp from 'lerp'
+import loadable from "@loadable/component"
+import { EffectComposer, Bloom, Noise } from '@react-three/postprocessing'
 
-import editableState from './editableState.json';
+const PadObj = loadable(() => import("../Pad"), {
+    fallback: <Html>Loading...</Html>,
+})
 
 const Zoom = () => {
     // This one makes the camera move in and out
@@ -19,8 +20,6 @@ const Zoom = () => {
   
 
 const ThreeScene = () => {
-    const EditableCamera = e(PerspectiveCamera, 'perspectiveCamera');
-    const EditablePad = e(PadObj, 'group')
     const [load, setload] = useState(false)
     useEffect(() => {
         setload(true)
@@ -31,25 +30,21 @@ const ThreeScene = () => {
             style={{ height: '100vh', width: '100vw', position: 'absolute', top: '0', left: '0', zIndex: '-1', background: '#181827' }}
         >
             <Stars fade/>
-            <EditableManager state={editableState} />
-            <EditableCamera makeDefault uniqueName="Camera" />
-            <ambientLight intensity={0.5} />
-            <e.spotLight
-                position={[10, 10, 10]}
+            <PerspectiveCamera makeDefault position={[1, 1, 0]} rotation={[-0.2, 0.3, 0]}/>
+            <ambientLight intensity={0.1} />
+            <spotLight
+                position={[0, 10, 10]}
                 angle={0.15}
                 penumbra={1}
-                uniqueName="Spotlight"
             />
-            <ErrorBoundary fallback={null}>
-                <Suspense fallback={null}>
-                    <EditablePad uniqueName="PadObject" />
-                </Suspense>
-            </ErrorBoundary>
-            <EffectComposer>
-                <Noise opacity={0.2} />
-                <Bloom luminanceThreshold={0.1} intensity={0.1} luminanceSmoothing={0.5} height={400} />
-            </EffectComposer>
+            <Suspense fallback={<Html>Loading...</Html>}>
+                <PadObj position={[0, 0, -2.5]} rotation={[0, -0.2, 0]} />
+            </Suspense>
             {load && <Zoom />}
+            <EffectComposer>
+                <Bloom luminanceThreshold={0    } luminanceSmoothing={0.1} height={300} />
+                <Noise opacity={0.01} />
+            </EffectComposer>
         </Canvas>
         
     )

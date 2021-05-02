@@ -6,12 +6,28 @@
 
 // You can delete this file if you're not using it
 
-exports.onCreateWebpackConfig = ({ stage, actions }) => {
-    actions.setWebpackConfig({
-        resolve: {
-            alias: {
-              'react-dom': '@hot-loader/react-dom'
-            }
-        },
-    })
+const LoadablePlugin = require('@loadable/webpack-plugin')
+
+exports.onCreateWebpackConfig = ({ actions, stage }) => {
+    if (
+        stage === "build-javascript" ||
+        stage === "develop" ||
+        stage === "develop-html"
+    ) {
+        actions.setWebpackConfig({
+        plugins: [
+            new LoadablePlugin({
+            filename:
+                stage === "develop"
+                ? `public/loadable-stats.json`
+                : "loadable-stats.json",
+            writeToDisk: true
+            })
+        ]
+        });
+    }
+};
+
+exports.onCreateBabelConfig = ({ actions }) => {
+  actions.setBabelPlugin({ name: '@loadable/babel-plugin' })
 }

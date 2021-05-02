@@ -6,7 +6,7 @@ import React, { useRef, useState } from 'react'
 import * as THREE from "three"
 import { useGLTF, shaderMaterial } from '@react-three/drei'
 import { useSpring, a } from "react-spring/three"
-import { extend, useFrame } from "react-three-fiber"
+import { extend, useFrame } from "@react-three/fiber"
 import { useKeyPress } from "../Utils"
 import glsl from "babel-plugin-glsl/macro"
 
@@ -56,7 +56,7 @@ const Keys = (props) => {
       onPointerDown={() => setActive(true)}
       onPointerUp={() => setActive(false)}
       scale={key.scale}
-    >
+      >
       {active | keyActive ? <fadeMaterial ref={ref}/> : <meshStandardMaterial color="#FF7960" roughness="1" metalness="0" />}
     </a.mesh>
   )
@@ -137,4 +137,4 @@ const PadObj = React.forwardRef((props, ref) => {
 
 useGLTF.preload('../../pad_music.glb')
 
-export {PadObj}
+export default PadObj

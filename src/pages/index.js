@@ -1,16 +1,12 @@
-import React, {Suspense} from "react"
-
-import { Html } from '@react-three/drei'
-import {Layout, SEO, ThreeScene, ErrorBoundary} from "../components"
+import React from "react"
+import { Layout, SEO, ThreeScene } from "../components"
+import { A11yAnnouncer } from '@react-three/a11y'
 
 const IndexPage = () => (
   <Layout>
     <SEO title="Home" lang="en" />
-    <ErrorBoundary fallback={null}>
-      <Suspense fallback={<Html>Loading..</Html>}>
-        <ThreeScene />
-      </Suspense>
-    </ErrorBoundary>
+    <ThreeScene />
+    <A11yAnnouncer />
   </Layout>
 )
 
