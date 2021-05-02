@@ -1,5 +1,4 @@
 export {SEO} from './SEO'
 export {Layout} from './Layout'
 export {ThreeScene} from './ThreeScene'
-export {ErrorBoundary} from './Error'
 export {useKeyPress} from './Utils'

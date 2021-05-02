@@ -42,7 +42,7 @@ const ThreeScene = () => {
             </Suspense>
             {load && <Zoom />}
             <EffectComposer>
-                <Bloom luminanceThreshold={0    } luminanceSmoothing={0.1} height={300} />
+                <Bloom luminanceThreshold={0} luminanceSmoothing={0.1} height={300} />
                 <Noise opacity={0.01} />
             </EffectComposer>
         </Canvas>
